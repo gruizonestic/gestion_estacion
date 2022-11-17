@@ -1,3 +1,5 @@
 FROM node:latest
 
-WORKDIR /
+COPY ./back.js /code/
+WORKDIR /code
+CMD ["node", "back.js"]
