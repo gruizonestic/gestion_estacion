@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  backend1:
+    build: ./backend
+    ports:
+      - "5101:5000"
+  backend2:
+    build: ./backend
+    ports:
+      - "5102:5000"
+  frontend1:
+    build: ./frontend
+    ports:
+      - "5103:80"
+    depends_on:
+      - backend1
+      - backend2
+  frontend2:
+    build: ./frontend
+    ports:
+      - "5104:80"
+    depends_on:
+      - backend1
+      - backend2
+  balanceador:
+    build: ./balanceador
+    ports:
+      - "5105:80"
+    depends_on:
+      - frontend1
+      - frontend2

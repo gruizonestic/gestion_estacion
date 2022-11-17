@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  api1:
+    build: ./api_json
+    ports:
+      - "5001:5000"
+  api2:
+    build: ./api_rest
+    ports:
+      - "5002:5000"
+  api3:
+    build: ./api_soap
+    ports: 
+      - "5003:5000"
+  api4:
+    build: ./api_xml
+    ports:
+     - "5004:5000"
