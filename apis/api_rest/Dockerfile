@@ -1,3 +1,5 @@
 FROM openjdk
 
-WORKDIR /
+COPY ./rest.java /code/
+WORKDIR /code
+CMD ["java","rest.java"]
