@@ -1,11 +1,19 @@
 version: '3'
 services:
   python_backend:
-    build: .
+    build: ./backend
     volumes:
       - python_backend:/var/backend
     #restart: always
     expose:
       - 5501
+
+  api_luces:
+    depends_on:
+      - python_backend
+    build: ./apis/api_luces
+    expose:
+      - 5502
+
 volumes:
   python_backend:
