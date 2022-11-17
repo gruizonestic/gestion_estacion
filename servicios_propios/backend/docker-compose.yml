@@ -1,0 +1,11 @@
+version: '3'
+services:
+  python_backend:
+    build: .
+    volumes:
+      - python_backend:/var/backend
+    #restart: always
+    expose:
+      - 5501
+volumes:
+  python_backend:
