@@ -1,5 +1,4 @@
-
-:::mermaid
+```mermaid
    flowchart LR
    %% Grafo de la orquestación de los puntos de venta
     subgraph puntos_de_venta
@@ -118,4 +117,4 @@
         backend_monitores<-->apigestora(API Gestora Trenes)
     end
     apigestora<-->gestora([Servicio Gestora Trenes])
-:::
+```
