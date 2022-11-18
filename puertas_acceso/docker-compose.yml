@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  puerta1:
+    build: ./frontend
+    ports:
+      - "5201:5000"
+  puerta2:
+    build: ./frontend
+    ports:
+      - "5202:5000"
+  puerta3:
+    build: ./frontend
+    ports:
+      - "5203:5000"
+  puerta4:
+    build: ./frontend
+    ports:
+      - "5204:5000"
+  puerta5:
+    build: ./frontend
+    ports:
+      - "5205:80"
+  puerta6:
+    build: ./frontend
+    ports:
+      - "5206:5000"
+  backend1_puerta:
+    build: ./backend
+    ports:
+      - "5207:5000"
+  backend2_puerta:
+    build: ./backend
+    ports:
+      - "5208:5000"
+  backend3_puerta:
+    build: ./backend
+    ports:
+      - "5209:5000"
+
