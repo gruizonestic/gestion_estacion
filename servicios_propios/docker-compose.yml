@@ -1,4 +1,7 @@
 version: '3'
+
+#Servicio privado de gestión, lanzamos una instancia paa cada tipo de apis, 
+#una base de datos con su esclavo, la aplicacion qeu realiza todos los procesos y el terminal de fichaje.
 services:
   python_backend:
     build: ./backend
@@ -6,21 +9,18 @@ services:
       - python_backend:/var/backend
     expose:
       - 5501
-
   api_luces:
     depends_on:
       - python_backend
     build: ./apis/api_luces
     expose:
       - 5502
-
   api_puertas:
     depends_on:
       - python_backend
     build: ./apis/api_puertas
     expose:
       - 5503
-
   db:
     image: mysql:8
     volumes:
@@ -29,12 +29,12 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=mypass
     expose:
-      - 5504
-
+      - 5504-5505
+    escale: 2
   terminal:
     build: ./terminal
     expose:
-      - 5505
+      - 5506
 
 volumes:
   python_backend:

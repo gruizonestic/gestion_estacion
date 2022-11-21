@@ -1,5 +1,8 @@
 version: "3"
 
+#Tenemos 6 puertas de acceso, acda una de ellas debe tener su propio sistema para poder permitir la entrada a los clientes, 
+#al igual que las pantallas, tenemos que asegurar la mayor presencia por lo cual hemos obtado a tener los backends replicados en 3 contendeores
+#para poder tener la mayor disponibilidad y no poder sufragar una cantidad de peticione smuy considerable.
 services:
   puerta:
     build: ./frontend

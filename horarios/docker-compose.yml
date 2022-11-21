@@ -1,5 +1,8 @@
 version: "3"
 
+#Hemos decididdo crear dos contenedores por cada servicio a esceción del balanceador ya que se trta de un servicio esencial, 
+#en caso de que no se mutren los horarios a los pasajeros pueden perder su viaje haciendo una reclamación contra la empresa 
+#por falta de información.
 services:
   backend:
     build: ./backend
@@ -22,3 +25,8 @@ services:
     hostname: "balanceador-horarios"
     ports:
       - 5105:5000
+  api_trenes:
+    build: ./api_json
+    ports:
+      - "5106-5107:5000"
+    scale: 2

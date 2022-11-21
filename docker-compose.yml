@@ -38,6 +38,11 @@ services:
     hostname: "balanceador-horarios"
     ports:
       - 5105:5000
+  api_trenes:
+    build: ./horarios/api_json
+    ports:
+      - "5106-5107:5000"
+    scale: 2
   puerta:
     build: ./puertas_acceso/frontend
     ports:
