@@ -4,7 +4,6 @@ services:
     build: ./backend
     volumes:
       - python_backend:/var/backend
-    #restart: always
     expose:
       - 5501
 
@@ -15,5 +14,28 @@ services:
     expose:
       - 5502
 
+  api_puertas:
+    depends_on:
+      - python_backend
+    build: ./apis/api_puertas
+    expose:
+      - 5503
+
+  db:
+    image: mysql:${MYSQL_VERSION}
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=mypass
+    expose:
+      - 5504
+
+  terminal:
+    build: ./terminal
+    expose:
+      - 5505
+
 volumes:
   python_backend:
+  db_data:
