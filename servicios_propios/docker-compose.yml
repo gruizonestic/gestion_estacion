@@ -22,7 +22,7 @@ services:
       - 5503
 
   db:
-    image: mysql:${MYSQL_VERSION}
+    image: mysql:8
     volumes:
       - db_data:/var/lib/mysql
     restart: always

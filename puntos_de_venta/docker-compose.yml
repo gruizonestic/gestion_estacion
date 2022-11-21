@@ -1,0 +1,37 @@
+version: '3'
+services:
+  transferencias_diarias:
+    build: ./bbdd_pagos
+
+  frontend_tpv:
+    build: ./terminal_automatica/frontend
+    scale: 4
+    expose:
+      - 5300
+
+  backend_ventas:
+    build: ./backend
+    scale: 3
+    expose:
+      - 5301
+
+  tpv:
+    depends_on:
+      - backend_ventas
+    build: ./terminal_automatica/tpv
+    scale: 4
+    expose:
+      - 5302
+
+  db:
+    image: mysql:8
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=mypass
+    expose:
+      - 5304
+
+volumes:
+  db_data:
