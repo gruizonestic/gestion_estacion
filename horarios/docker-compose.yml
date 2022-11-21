@@ -1,37 +1,24 @@
 version: "3"
 
 services:
-  backend1:
+  backend:
     build: ./backend
     hostname: "backend1-horarios"
     ports:
-      - 5101:5000
-  backend2:
-    build: ./backend
-    hostname: "backend2-horarios"
-    ports:
-      - 5102:5000
-  frontend1:
+      - 5101-5102:5000
+    scale: 2
+  frontend:
     build: ./frontend
     depends_on:
-      - backend1
-      - backend2
+      - backend
     hostname: "frontend1-horarios"
     ports:
-      - 5103:5000
-  frontend2:
-    build: ./frontend
-    depends_on:
-      - backend1
-      - backend2
-    hostname: "frontend2-horarios"
-    ports:
-      - 5104:5000
+      - 5103-5104:5000
+    scale: 2
   balanceador:
     build: ./balanceador
     depends_on:
-      - frontend1
-      - frontend2
+      - frontend
     hostname: "balanceador-horarios"
     ports:
       - 5105:5000
