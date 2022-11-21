@@ -65,12 +65,12 @@
         direction LR
         subgraph frontales_puertas_acceso
             direction LR
-            puerta_acceso1(Puerta_1: C)
-            puerta_acceso2(Puerta_2: C)
-            puerta_acceso3(Puerta_3: C)
-            puerta_acceso4(Puerta_4: C)
-            puerta_acceso5(Puerta_5: C)
-            puerta_acceso6(Puerta_6: C)
+            puerta_acceso1(Puerta_1: Python)
+            puerta_acceso2(Puerta_2: Python)
+            puerta_acceso3(Puerta_3: Python)
+            puerta_acceso4(Puerta_4: Python)
+            puerta_acceso5(Puerta_5: Python)
+            puerta_acceso6(Puerta_6: Python)
         end
         frontales_puertas_acceso <--> backend_puertas
         subgraph backend_puertas

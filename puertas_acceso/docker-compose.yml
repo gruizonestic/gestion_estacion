@@ -1,40 +1,27 @@
 version: "3"
 
 services:
-  puerta1:
+  puerta:
     build: ./frontend
     ports:
-      - "5201:5000"
-  puerta2:
-    build: ./frontend
-    ports:
-      - "5202:5000"
-  puerta3:
-    build: ./frontend
-    ports:
-      - "5203:5000"
-  puerta4:
-    build: ./frontend
-    ports:
-      - "5204:5000"
-  puerta5:
-    build: ./frontend
-    ports:
-      - "5205:80"
-  puerta6:
-    build: ./frontend
-    ports:
-      - "5206:5000"
-  backend1_puerta:
+      - "5201-5206:5000"
+    scale: 6
+    depends_on:
+      - puerta_backend1
+      - puerta_backend2
+      - puerta_backend3
+  puerta_backend1:
     build: ./backend
     ports:
       - "5207:5000"
-  backend2_puerta:
+    hostname: puerta.backend1
+  puerta_backend2:
     build: ./backend
     ports:
       - "5208:5000"
-  backend3_puerta:
+    hostname: puerta.backend2
+  puerta_backend3:
     build: ./backend
     ports:
       - "5209:5000"
-
+    hostname: puerta.backend3
