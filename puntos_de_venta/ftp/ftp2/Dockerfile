@@ -1,0 +1,6 @@
+FROM bogem/ftp
+VOLUME /home/vsftpd
+ENV FTP_USER=ftp_user
+ENV FTP_PASS=ftp_pass
+ENV PASV_ADDRESS=127.0.0.1
+EXPOSE 20 21 47400-47470
