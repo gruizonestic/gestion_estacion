@@ -3,30 +3,36 @@ version: "3"
 services:
   backend1:
     build: ./backend
-    ports:
-      - "5101:5000"
+    hostname: "backend1-horarios"
+    networks:
+      - red_privada
   backend2:
     build: ./backend
-    ports:
-      - "5102:5000"
+    hostname: "backend2-horarios"
+    networks:
+      - red_privada
   frontend1:
     build: ./frontend
-    ports:
-      - "5103:80"
-    depends_on:
-      - backend1
-      - backend2
+    hostname: "frontend1-horarios"
+    networks:
+      - red_privada
+      - red_web  
   frontend2:
     build: ./frontend
-    ports:
-      - "5104:80"
-    depends_on:
-      - backend1
-      - backend2
+    hostname: "frontend2-horarios"
+    networks:
+      - red_privada
+      - red_web
   balanceador:
     build: ./balanceador
     ports:
       - "5105:80"
-    depends_on:
-      - frontend1
-      - frontend2
+    hostname: "balanceador-horarios"
+    networks:
+      - red_publica
+      - red_web
+
+networks:
+  red_privada: {}
+  red_web: {}
+  red_publica: {}
