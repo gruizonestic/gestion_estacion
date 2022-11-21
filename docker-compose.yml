@@ -1,0 +1,128 @@
+version: "3"
+
+services:
+  api1:
+    build: ./apis/api_json
+    ports:
+      - "5001:5000"
+  api2:
+    build: ./apis/api_rest
+    ports:
+      - "5002:5000"
+  api3:
+    build: ./apis/api_soap
+    ports: 
+      - "5003:5000"
+  api4:
+    build: ./apis/api_xml
+    ports:
+     - "5004:5000"
+  backend:
+    build: ./horarios/backend
+    hostname: "backend1-horarios"
+    ports:
+      - 5101-5102:5000
+    scale: 2
+  frontend:
+    build: ./horarios/frontend
+    depends_on:
+      - backend
+    hostname: "frontend1-horarios"
+    ports:
+      - 5103-5104:5000
+    scale: 2
+  balanceador:
+    build: ./horarios/balanceador
+    depends_on:
+      - frontend
+    hostname: "balanceador-horarios"
+    ports:
+      - 5105:5000
+  puerta:
+    build: ./puertas_acceso/frontend
+    ports:
+      - "5201-5206:5000"
+    scale: 6
+    depends_on:
+      - puerta_backend1
+      - puerta_backend2
+      - puerta_backend3
+  puerta_backend1:
+    build: ./puertas_acceso/backend
+    ports:
+      - "5207:5000"
+    hostname: puerta.backend1
+  puerta_backend2:
+    build: ./puertas_acceso/backend
+    ports:
+      - "5208:5000"
+    hostname: puerta.backend2
+  puerta_backend3:
+    build: ./puertas_acceso/backend
+    ports:
+      - "5209:5000"
+    hostname: puerta.backend3
+  transferencias_diarias:
+    build: ./puntos_de_venta/bbdd_pagos
+  frontend_tpv:
+    build: ./puntos_de_venta/terminal_automatica/frontend
+    scale: 4
+    expose:
+      - 5300
+  backend_ventas:
+    build: ./puntos_de_venta/backend
+    scale: 3
+    expose:
+      - 5301
+  tpv:
+    depends_on:
+      - backend_ventas
+    build: ./puntos_de_venta/terminal_automatica/tpv
+    scale: 4
+    expose:
+      - 5302
+  db:
+    image: mysql:8
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=mypass
+    expose:
+      - 5304
+  python_backend:
+    build: ./servicios_propios/backend
+    volumes:
+      - python_backend:/var/backend
+    expose:
+      - 5501
+  api_luces:
+    depends_on:
+      - python_backend
+    build: ./servicios_propios/apis/api_luces
+    expose:
+      - 5502
+  api_puertas:
+    depends_on:
+      - python_backend
+    build: ./servicios_propios/apis/api_puertas
+    expose:
+      - 5503
+  db_servicio:
+    image: mysql:8
+    volumes:
+      - db_data_servicio:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=mypass
+    expose:
+      - 5504
+  terminal:
+    build: ./servicios_propios/terminal
+    expose:
+      - 5505
+
+volumes:
+  db_data: {}
+  python_backend: {}
+  db_data_servicio: {}

@@ -1,4 +1,4 @@
-package puntos_de_venta.frontend;
+package puntos_de_venta.terminal_automatica.frontend;
 
 public class frontend {
     public static void main(String[] args) throws InterruptedException {
