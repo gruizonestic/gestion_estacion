@@ -1,6 +1,6 @@
 # Estación de Massanasa
 
-_Proyecto de gestión automatica de la infraestructura IT de la estación de Massanasa_
+_Proyecto de gestión automática de la infraestructura IT de la estación de Massanasa_
 
 ## Comenzando 🚀
 
