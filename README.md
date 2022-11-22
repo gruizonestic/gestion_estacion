@@ -27,6 +27,13 @@ _Para finalizar los servicios_
 ```
 docker-compose down
 ```
+## Configuración FTP
+Usuario y contraseña del servicio FTP:
+```
+Usuario: user
+Contraseña: passpass1234
+```
+
 ## Autores
 
 * **Guillermo Ruiz** - [gruisonestic](https://github.com/gruizonestic)
