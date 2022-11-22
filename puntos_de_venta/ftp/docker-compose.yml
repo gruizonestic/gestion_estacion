@@ -8,4 +8,7 @@ services:
       - "21:21"
       - "47400-47470:47400-47470"
     volumes:
-      - /home/ftpserver:/home/vsftpd
+      - ~/ftp:/home/vsftpd
+    hostname: prueba.ftp
+volumes:
+  ftp:
