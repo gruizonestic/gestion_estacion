@@ -11,12 +11,12 @@ services:
       - "5002:5000"
   api3:
     build: ./apis/api_soap
-    ports: 
+    ports:
       - "5003:5000"
   api4:
     build: ./apis/api_xml
     ports:
-     - "5004:5000"
+      - "5004:5000"
   backend:
     build: ./horarios/backend
     hostname: "backend1-horarios"
@@ -39,7 +39,7 @@ services:
     ports:
       - 5105:5000
   api_trenes:
-    build: ./horarios/api_json
+    build: ./horarios/api_trenes
     ports:
       - "5106-5107:5000"
     scale: 2
