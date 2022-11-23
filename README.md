@@ -1,6 +1,6 @@
 # Estación de Massanasa
 
-_Proyecto de gestión automatica de la infraestructura IT de la estación de Massanasa_
+_Proyecto de gestión automática de la infraestructura IT de la estación de Massanasa_
 
 ## Comenzando 🚀
 
@@ -27,6 +27,14 @@ _Para finalizar los servicios_
 ```
 docker-compose down
 ```
+## Configuración FTP
+Usuario y contraseña del servicio FTP:
+
+> Usuario: user
+
+> Contraseña: passpass1234
+
+
 ## Autores
 
 * **Guillermo Ruiz** - [gruisonestic](https://github.com/gruizonestic)
