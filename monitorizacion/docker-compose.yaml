@@ -40,7 +40,7 @@ services:
       # Volumen de datos
       - grafana_data:/var/lib/grafana
       # Volumen de configuración
-      - ./grafana/:/etc/grafana/
+      - ./grafana/datasources:/etc/grafana/datasources
     #env_file:
     #  - ./grafana/config.monitoring
     networks:
