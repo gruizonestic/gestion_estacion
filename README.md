@@ -139,7 +139,9 @@ Usuario y contraseña del servicio FTP:
         terminales_fichaje --> bbdd_fichaje1
         backend_estacion(Backend 1: Python)-->gestor_luces(API Luces)
         backend_estacion-->gestor_puertas(API Puertas)
+        server_ftp(Servidor FTP)
     end
+    server_ftp<-->acceso_remoto[Acceso remoto]
     gestor_luces-->servicio_luces(Servicio Luces)
     gestor_puertas-->servicio_puertas(Servicio Puertas)
 
