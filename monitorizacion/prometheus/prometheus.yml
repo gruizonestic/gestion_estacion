@@ -24,12 +24,9 @@ scrape_configs:
 
 
   - job_name: 'cadvisor'
-
-    # Override the global default and scrape targets from this job every 5 seconds.
-    scrape_interval: 15s
-
+    scrape_interval: 5s
     static_configs:
-         - targets: ['localhost:8080']
+      - targets: ['cadvisor:8080']
 
 #  - job_name: 'node-exporter'
 
