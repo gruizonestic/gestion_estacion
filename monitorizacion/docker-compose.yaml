@@ -44,12 +44,11 @@ services:
       # Volumen de datos
       - grafana_data:/var/lib/grafana
       # Volumen de configuración
-      - ./grafana/datasources:/etc/grafana/datasources
-    #env_file:
-    #  - ./grafana/config.monitoring
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    env_file:
+      - ./grafana/config.monitoring
     networks:
       - backend
-      - frontend
     restart: "always"
 
 networks:
