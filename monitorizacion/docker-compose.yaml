@@ -21,26 +21,36 @@ services:
       - '--web.console.templates=/usr/share/prometheus/consoles'
     links:
       - cadvisor:cadvisor
+    depends_on:
+      - cadvisor
   # Analiza los recursos usados por los contendores
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.46.0
+    privileged: true
+    command:
+      - "--housekeeping_interval=30s"
+      - "--docker_only=true"
+    #devices:
+      #- /dev/kmsg:/dev/kmsg
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
       - /sys:/sys:ro
-      - /var/lib/docker:/var/lib/docker
-    ports:
-      - 8080:8080
+      - /var/snap/docker/common/var-lib-docker:/var/lib/docker:ro
+    expose:
+      - 8080
     networks:
       - backend
     restart: "always"
+    labels:
+      org.label-schema.group: "monitoring"
   # Visor de métricas y datos
   grafana:
     image: grafana/grafana:9.0.5
     depends_on: 
       - prometheus
-    ports: 
-      - 3000:3000
+    expose: 
+      - 3000
     volumes:
       # Volumen de datos
       - grafana_data:/var/lib/grafana
@@ -53,7 +63,7 @@ services:
     restart: "always"
   redis:
     image: redis
-    container_name: redis
+
     ports:
       - 6379:6379
 
