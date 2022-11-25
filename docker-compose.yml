@@ -87,7 +87,7 @@ services:
     expose:
       - 5302
   ftp:
-    build: ./puntos_de_venta/ftp2
+    build: ./puntos_de_venta/ftp
     ports:
       - "20:20"
       - "21:21"
