@@ -26,7 +26,7 @@ services:
     ports:
       - 5105:5000
   api_trenes:
-    build: ./api_json
+    build: ./api_trenes
     ports:
       - "5106-5107:5000"
     scale: 2
