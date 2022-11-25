@@ -33,5 +33,11 @@ services:
     expose:
       - 5304
 
+  terminal_manual:
+    build: ./terminal_manual/frontend
+    scale: 2
+    expose:
+      - 5305
+
 volumes:
   db_data:

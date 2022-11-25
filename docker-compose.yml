@@ -21,17 +21,23 @@ services:
     ports:
       - "5004:5000"
 
-  backend:
+  horarios_backend:
     image: gruizonestic/gestion_estacion_backend
     ports:
       - 5101-5102:5000
+    deploy:
+      mode: replicated
+      replicas: 2
 
-  frontend:
+  horarios_frontend:
     image: gruizonestic/gestion_estacion_frontend
     depends_on:
       - backend
     ports:
       - 5103-5104:5000
+    deploy:
+      mode: replicated
+      replicas: 2
 
   balanceador:
     image: gruizonestic/gestion_estacion_balanceador
@@ -51,11 +57,18 @@ services:
       - "5201-5206:5000"
     depends_on:
       - puerta_backend
+    deploy:
+      mode: replicated
+      replicas: 6
 
   puerta_backend:
     image: gruizonestic/gestion_estacion_puerta_backend
     ports:
       - "5207:5000"
+    hostname: puerta.backend
+    deploy:
+      mode: replicated
+      replicas: 3
 
   transferencias_diarias:
     image: gruizonestic/gestion_estacion_transferencias_diarias
@@ -65,6 +78,9 @@ services:
 
   backend_ventas:
     image: gruizonestic/gestion_estacion_backend_ventas
+    deploy:
+      mode: replicated
+      replicas: 3
 
   tpv:
     depends_on:
@@ -84,7 +100,6 @@ services:
     image: mysql:8
     volumes:
       - db_data:/var/lib/mysql
-    restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=mypass
 
@@ -107,12 +122,17 @@ services:
     image: mysql:8
     volumes:
       - db_data_servicio:/var/lib/mysql
-    restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=mypass
 
-  terminal:
+  terminal_fichaje:
     image: gruizonestic/gestion_estacion_terminal
+
+  terminal_manual:
+    image: gruizonestic/gestion_estacion_terminal_manual
+    deploy:
+      mode: replicated
+      replicas: 2
 
 volumes:
   db_data: {}
