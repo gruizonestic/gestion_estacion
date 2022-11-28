@@ -1,5 +1,8 @@
-setInterval(
-    function(){
-        console.log("Hola soy backend")
-    }, 5000
-)
+function sleep(s) {
+    return new Promise(resolve => setTimeout(resolve,s))
+}
+
+console.log('Aquí funciona el backend de la aplicación de horarios')
+while(true) {
+    sleep(1000)
+}
