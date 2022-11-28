@@ -2,142 +2,149 @@ version: "3"
 
 services:
   api1:
-    build: ./apis/api_json
+    image: gruizonestic/gestion_estacion_api1
     ports:
       - "5001:5000"
+
   api2:
-    build: ./apis/api_rest
+    image: gruizonestic/gestion_estacion_api2
     ports:
       - "5002:5000"
+
   api3:
-    build: ./apis/api_soap
+    image: gruizonestic/gestion_estacion_api3
     ports:
       - "5003:5000"
+
   api4:
-    build: ./apis/api_xml
+    image: gruizonestic/gestion_estacion_api4
     ports:
       - "5004:5000"
-  backend:
-    build: ./horarios/backend
-    hostname: "backend1-horarios"
+
+  horarios_backend:
+    image: gruizonestic/gestion_estacion_horarios_backend
     ports:
       - 5101-5102:5000
-    scale: 2
-  frontend:
-    build: ./horarios/frontend
+    deploy:
+      mode: replicated
+      replicas: 2
+
+  horarios_frontend:
+    image: gruizonestic/gestion_estacion_horarios_frontend
     depends_on:
-      - backend
-    hostname: "frontend1-horarios"
+      - horarios_backend
     ports:
       - 5103-5104:5000
-    scale: 2
+    deploy:
+      mode: replicated
+      replicas: 2
+
   balanceador:
-    build: ./horarios/balanceador
+    image: gruizonestic/gestion_estacion_balanceador
     depends_on:
-      - frontend
-    hostname: "balanceador-horarios"
+      - horarios_frontend
     ports:
       - 5105:5000
+
   api_trenes:
-    build: ./horarios/api_trenes
+    image: gruizonestic/gestion_estacion_api_trenes
     ports:
       - "5106-5107:5000"
-    scale: 2
-  puerta:
-    build: ./puertas_acceso/frontend
-    ports:
-      - "5201-5206:5000"
-    scale: 6
-    depends_on:
-      - puerta_backend1
-      - puerta_backend2
-      - puerta_backend3
-  puerta_backend1:
-    build: ./puertas_acceso/backend
+
+  puerta_backend:
+    image: gruizonestic/gestion_estacion_puerta_backend
     ports:
       - "5207:5000"
-    hostname: puerta.backend1
-  puerta_backend2:
-    build: ./puertas_acceso/backend
+    hostname: puerta.backend
+    deploy:
+      mode: replicated
+      replicas: 3
+
+  puerta:
+    image: gruizonestic/gestion_estacion_puerta
     ports:
-      - "5208:5000"
-    hostname: puerta.backend2
-  puerta_backend3:
-    build: ./puertas_acceso/backend
-    ports:
-      - "5209:5000"
-    hostname: puerta.backend3
+      - "5201-5206:5000"
+    depends_on:
+      - puerta_backend
+    deploy:
+      mode: replicated
+      replicas: 6
+
   transferencias_diarias:
-    build: ./puntos_de_venta/bbdd_pagos
+    image: gruizonestic/gestion_estacion_transferencias_diarias
+
   frontend_tpv:
-    build: ./puntos_de_venta/terminal_automatica/frontend
-    scale: 4
-    expose:
-      - 5300
+    image: gruizonestic/gestion_estacion_frontend_tpv
+
   backend_ventas:
-    build: ./puntos_de_venta/backend
-    scale: 3
-    expose:
-      - 5301
+    image: gruizonestic/gestion_estacion_backend_ventas
+    deploy:
+      mode: replicated
+      replicas: 3
+
   tpv:
     depends_on:
       - backend_ventas
-    build: ./puntos_de_venta/terminal_automatica/tpv
-    scale: 4
-    expose:
-      - 5302
+    image: gruizonestic/gestion_estacion_tpv
+
   ftp:
-    build: ./puntos_de_venta/ftp
+    image: gruizonestic/gestion_estacion_ftp
     ports:
       - "20:20"
       - "21:21"
       - "47400-47470:47400-47470"
     volumes:
-      - ~/ftp:/home/vsftpd
-    hostname: prueba.ftp
+      - ftp:/home/vsftpd
+
   db:
     image: mysql:8
     volumes:
       - db_data:/var/lib/mysql
-    restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=mypass
-    expose:
-      - 5304
+
   python_backend:
-    build: ./servicios_propios/backend
+    image: gruizonestic/gestion_estacion_python_backend
     volumes:
       - python_backend:/var/backend
-    expose:
-      - 5501
+
   api_luces:
     depends_on:
       - python_backend
-    build: ./servicios_propios/apis/api_luces
-    expose:
-      - 5502
+    image: gruizonestic/gestion_estacion_api_luces
+
   api_puertas:
     depends_on:
       - python_backend
-    build: ./servicios_propios/apis/api_puertas
-    expose:
-      - 5503
+    image: gruizonestic/gestion_estacion_api_puertas
+
   db_servicio:
     image: mysql:8
     volumes:
       - db_data_servicio:/var/lib/mysql
-    restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=mypass
-    expose:
-      - 5504
-  terminal:
-    build: ./servicios_propios/terminal
-    expose:
-      - 5505
+
+  terminal_fichaje:
+    image: gruizonestic/gestion_estacion_terminal
+
+  terminal_manual:
+    image: gruizonestic/gestion_estacion_terminal_manual
+    deploy:
+      mode: replicated
+      replicas: 2
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - portainer:/data
+    ports:
+      - 9000:9000
 
 volumes:
   db_data: {}
   python_backend: {}
   db_data_servicio: {}
   ftp: {}
+  portainer: {}

@@ -34,6 +34,12 @@ Usuario y contraseña del servicio FTP:
 
 > Contraseña: passpass1234
 
+## Acceso a Portainer
+Usuario y contraseña del servicio Portainer:
+
+> Usuario: admin
+
+> Contraseña: adminadminadmin
 
 ## Autores
 
@@ -128,18 +134,19 @@ Usuario y contraseña del servicio FTP:
     %%Grafo de la gestión de la domótica
     subgraph servicios_propios
         direction LR
-        subgraph terminales_fichaje
+        subgraph terminal_fichaje
             direction LR
             terminal_fichaje1(Fichaje_1: Python)
-            terminal_fichaje2(Fichaje_2: Python)
         end
         subgraph BBDD_Fichajes
             bbdd_fichaje1[(BBDD_fichajes)] --> bbdd_fichaje2[(BBDD_fichajes_Esclavo)]
         end
-        terminales_fichaje --> bbdd_fichaje1
+        terminal_fichaje --> bbdd_fichaje1
         backend_estacion(Backend 1: Python)-->gestor_luces(API Luces)
         backend_estacion-->gestor_puertas(API Puertas)
+        server_ftp(Servidor FTP)
     end
+    server_ftp<-->acceso_remoto[Acceso remoto]
     gestor_luces-->servicio_luces(Servicio Luces)
     gestor_puertas-->servicio_puertas(Servicio Puertas)
 
