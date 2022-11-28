@@ -161,4 +161,18 @@ Usuario y contraseña del servicio FTP:
         backend_monitores<-->apigestora(API Gestora Trenes)
     end
     apigestora<-->gestora([Servicio Gestora Trenes])
+
+    %%Monitorización
+    subgraph monitorización
+        Caddy(Caddy: Proxy)<-->Prometheus(Prometheus: Backend gestión de datos)-->Grafana(Grafana: Visor de datos)
+        subgraph node_exporter
+            direction LR
+            NodeExporter1(NodeExporter: Recupera datos del nodo)
+            NodeExporter2(NodeExporter: Recupera datos del nodo)
+            NodeExporter3(NodeExporter: Recupera datos del nodo)
+        end
+        CAdvisor(Cadvisor: Recupera datos de los contenedores)<-->Caddy
+        node_exporter<-->Caddy(Caddy: Proxy)
+    end
+        
 ```

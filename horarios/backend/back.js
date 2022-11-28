@@ -4,5 +4,5 @@ function sleep(s) {
 
 console.log('Aquí funciona el backend de la aplicación de horarios')
 while(true) {
-    sleep(1000)
+    setTimeout(1000)
 }
