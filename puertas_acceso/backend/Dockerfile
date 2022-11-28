@@ -9,4 +9,5 @@ RUN go mod init feedme
 RUN go mod tidy
 RUN go build -o main .
 RUN go env -w GO111MODULE=auto
+EXPOSE 5207
 CMD ["/app/main"]

@@ -22,7 +22,7 @@ services:
       - "5004:5000"
 
   horarios_backend:
-    image: gruizonestic/gestion_estacion_backend
+    image: gruizonestic/gestion_estacion_horarios_backend
     ports:
       - 5101-5102:5000
     deploy:
@@ -30,9 +30,9 @@ services:
       replicas: 2
 
   horarios_frontend:
-    image: gruizonestic/gestion_estacion_frontend
+    image: gruizonestic/gestion_estacion_horarios_frontend
     depends_on:
-      - backend
+      - horarios_backend
     ports:
       - 5103-5104:5000
     deploy:
@@ -42,7 +42,7 @@ services:
   balanceador:
     image: gruizonestic/gestion_estacion_balanceador
     depends_on:
-      - frontend
+      - horarios_frontend
     ports:
       - 5105:5000
 
@@ -133,6 +133,15 @@ services:
     deploy:
       mode: replicated
       replicas: 2
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./portainer-data:/data
+    ports:
+      - 9000:9000
 
 volumes:
   db_data: {}

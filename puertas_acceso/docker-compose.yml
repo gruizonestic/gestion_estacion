@@ -10,21 +10,10 @@ services:
       - "5201-5206:5000"
     scale: 6
     depends_on:
-      - puerta_backend1
-      - puerta_backend2
-      - puerta_backend3
-  puerta_backend1:
+      - puerta_backend
+
+  puerta_backend:
     build: ./backend
     ports:
       - "5207:5000"
-    hostname: puerta.backend1
-  puerta_backend2:
-    build: ./backend
-    ports:
-      - "5208:5000"
-    hostname: puerta.backend2
-  puerta_backend3:
-    build: ./backend
-    ports:
-      - "5209:5000"
-    hostname: puerta.backend3
+    hostname: puerta.backend

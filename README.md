@@ -34,6 +34,12 @@ Usuario y contraseña del servicio FTP:
 
 > Contraseña: passpass1234
 
+## Acceso a Portainer
+Usuario y contraseña del servicio Portainer:
+
+> Usuario: admin
+
+> Contraseña: adminadminadmin
 
 ## Autores
 
