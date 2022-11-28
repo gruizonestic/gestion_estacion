@@ -142,9 +142,133 @@ services:
     ports:
       - 9000:9000
 
+  prometheus:
+    image: prom/prometheus:v2.40.1
+    container_name: prometheus
+    user: root
+    volumes:
+      - ./monitorizacion/prometheus:/etc/prometheus
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.46.0
+    container_name: cadvisor
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+      - /cgroup:/cgroup:ro 
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+
+  grafana:
+    image: grafana/grafana:9.2.4
+    container_name: grafana
+    user: root
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitorizacion/grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitorizacion/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+    environment:
+      - GF_SECURITY_ADMIN_USER=${ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+
+  caddy:
+    image: caddy:2.6.2
+    container_name: caddy
+    ports:
+      - "3000:3000"
+      - "8080:8080"
+      - "9090:9090"
+    volumes:
+      - ./monitorizacion/caddy:/etc/caddy
+    environment:
+      - ADMIN_USER=${ADMIN_USER:-admin}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin}
+      - ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH:-$2a$14$1l.IozJx7xQRVmlkEQ32OeEEfP5mRxTpbDTCTcXRqn19gXD8YK1pO}
+    restart: unless-stopped
+
+  nodeexporter1:
+    image: prom/node-exporter:v1.4.0
+    container_name: node1
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints: [node.hostname == inspi02]
+
+  nodeexporter2:
+    image: prom/node-exporter:v1.4.0
+    container_name: node2
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints: [node.hostname == L910esp]
+
+  nodeexporter3:
+    image: prom/node-exporter:v1.4.0
+    container_name: node3
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints: [node.hostname == inspi1]
+
 volumes:
   db_data: {}
   python_backend: {}
   db_data_servicio: {}
   ftp: {}
   portainer: {}
+  prometheus_data: {}
+  grafana_data: {}
