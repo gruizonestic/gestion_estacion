@@ -51,6 +51,15 @@ services:
     ports:
       - "5106-5107:5000"
 
+  puerta_backend:
+    image: gruizonestic/gestion_estacion_puerta_backend
+    ports:
+      - "5207:5000"
+    hostname: puerta.backend
+    deploy:
+      mode: replicated
+      replicas: 3
+
   puerta:
     image: gruizonestic/gestion_estacion_puerta
     ports:
@@ -60,15 +69,6 @@ services:
     deploy:
       mode: replicated
       replicas: 6
-
-  puerta_backend:
-    image: gruizonestic/gestion_estacion_puerta_backend
-    ports:
-      - "5207:5000"
-    hostname: puerta.backend
-    deploy:
-      mode: replicated
-      replicas: 3
 
   transferencias_diarias:
     image: gruizonestic/gestion_estacion_transferencias_diarias
